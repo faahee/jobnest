@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JobNest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>JobNest - Department Level Placement System</h1>
+        <nav>
+            <button class="nav-btn" onclick="showSection('jobs')">Available Jobs</button>
+            <button class="nav-btn" onclick="showSection('recruiters')">Recruiters</button>
+            <button class="nav-btn" onclick="showRegisterModal()">Register</button>
+        </nav>
+    </header>
+
+    <!-- Registration Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Create Account</h2>
+            <div id="errorMsg" style="color: red; margin-bottom: 10px; display: none;"></div>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="regRole" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="recruiter">Recruiter</option>
+                        <option value="faculty">Faculty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Available Jobs Section -->
+    <div id="jobsSection" class="section container">
+        <h2>Available Job Offers</h2>
+        <table id="jobsTable">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Position</th>
+                    <th>Location</th>
+                    <th>Salary</th>
+                    <th>Recruiter</th>
+                </tr>
+            </thead>
+            <tbody id="jobsBody">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Recruiters Section -->
+    <div id="recruitersSection" class="section container" style="display: none;">
+        <h2>Recruiters</h2>
+        <table id="recruitersTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody id="recruitersBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Mock data for jobs and recruiters
+        const jobsData = [
+            { id: 1, company: 'Tech Corp', position: 'Software Engineer', location: 'New York', salary: '$80,000 - $120,000', recruiter_name: 'John Smith' },
+            { id: 2, company: 'Data Solutions', position: 'Data Analyst', location: 'San Francisco', salary: '$70,000 - $110,000', recruiter_name: 'Sarah Johnson' },
+            { id: 3, company: 'Cloud Systems', position: 'Cloud Architect', location: 'Seattle', salary: '$100,000 - $150,000', recruiter_name: 'Mike Chen' },
+            { id: 4, company: 'Web Designs', position: 'Frontend Developer', location: 'Los Angeles', salary: '$60,000 - $100,000', recruiter_name: 'Emily Davis' },
+            { id: 5, company: 'Mobile Apps Inc', position: 'Mobile Developer', location: 'Boston', salary: '$75,000 - $115,000', recruiter_name: 'David Wilson' }
+        ];
+
+        const recruitersData = [
+            { id: 1, name: 'John Smith', email: 'john.smith@techcorp.com', company: 'Tech Corp' },
+            { id: 2, name: 'Sarah Johnson', email: 'sarah.johnson@datasolutions.com', company: 'Data Solutions' },
+            { id: 3, name: 'Mike Chen', email: 'mike.chen@cloudsystems.com', company: 'Cloud Systems' },
+            { id: 4, name: 'Emily Davis', email: 'emily.davis@webdesigns.com', company: 'Web Designs' },
+            { id: 5, name: 'David Wilson', email: 'david.wilson@mobileapps.com', company: 'Mobile Apps Inc' }
+        ];
+
+        function showSection(sectionId) {
+            document.getElementById('jobsSection').style.display = sectionId === 'jobs' ? 'block' : 'none';
+            document.getElementById('recruitersSection').style.display = sectionId === 'recruiters' ? 'block' : 'none';
+            
+            if (sectionId === 'recruiters') {
+                loadRecruiters();
+            } else {
+                loadJobs();
+            }
+        }
+
+        function showRegisterModal() {
+            document.getElementById('registerModal').style.display = 'block';
+            resetRegisterForm();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            resetRegisterForm();
+        }
+
+        function resetRegisterForm() {
+            document.getElementById('registerForm').reset();
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const role = document.getElementById('regRole').value;
+
+            // Validate
+            if (!name || !email || !password || !role) {
+                showError('All fields are required');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+
+            // Get existing users from localStorage
+            let users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Check if email already exists
+            if (users.some(u => u.email === email)) {
+                showError('Email already registered');
+                return;
+            }
+
+            // Add new user
+            users.push({
+                id: users.length + 1,
+                name,
+                email,
+                password, // Note: In production, never store passwords in plain text
+                role,
+                company: role === 'recruiter' ? 'Company Name' : null
+            });
+
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Registration successful! You can now explore job offers and recruiters.');
+            closeModal('registerModal');
+        }
+
+        function loadJobs() {
+            const tbody = document.getElementById('jobsBody');
+            tbody.innerHTML = '';
+            
+            jobsData.forEach(job => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${job.company}</td>
+                    <td>${job.position}</td>
+                    <td>${job.location}</td>
+                    <td>${job.salary}</td>
+                    <td>${job.recruiter_name}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadRecruiters() {
+            const tbody = document.getElementById('recruitersBody');
+            tbody.innerHTML = '';
+            
+            recruitersData.forEach(recruiter => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${recruiter.name}</td>
+                    <td>${recruiter.email}</td>
+                    <td>${recruiter.company || 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('registerModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Load jobs on page load
+        window.addEventListener('DOMContentLoaded', loadJobs);
+    </script>
+</body>
+</html>
