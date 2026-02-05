@@ -179,3 +179,18 @@ th {
     display: grid;
     gap: 10px;
 }
+.apply-btn {
+    width: auto;
+    padding: 8px 16px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+.apply-btn:hover {
+    background: #45a049;
+}
