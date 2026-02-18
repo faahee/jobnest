@@ -31,126 +31,124 @@ body::before {
 
 /* ===== HEADER STYLES ===== */
 .header-modern {
-    background: linear-gradient(135deg, rgba(15, 32, 72, 0.95) 0%, rgba(26, 26, 77, 0.95) 100%);
+    background: linear-gradient(180deg, #003d7a 0%, rgba(15, 32, 72, 0.95) 100%);
     backdrop-filter: blur(10px);
     padding: 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border-bottom: 2px solid rgba(70, 200, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     animation: slideDown 0.6s ease-out;
 }
 
-.header-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* College Header Section */
-.college-header {
+/* ===== COLLEGE BANNER (TOP) ===== */
+.college-banner {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    background: linear-gradient(135deg, rgba(0, 61, 122, 0.15) 0%, rgba(255, 215, 0, 0.15) 100%);
+    gap: 25px;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(0, 61, 122, 0.12) 100%);
     border-bottom: 3px solid #FFD700;
 }
 
 .college-logo {
-    width: 80px;
-    height: 80px;
+    width: 75px;
+    height: 75px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 61, 122, 0.3));
+    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4)) drop-shadow(0 2px 6px rgba(0, 61, 122, 0.3));
     animation: logoFloat 3s ease-in-out infinite;
     flex-shrink: 0;
 }
 
 @keyframes logoFloat {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
 }
 
 .college-text {
     text-align: center;
+    padding: 0 10px;
 }
 
 .college-name {
     color: #FFD700;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 2px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 3px;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0, 61, 122, 0.3);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    font-family: 'Georgia', serif;
 }
 
 .college-motto {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 13px;
-    font-style: italic;
-    letter-spacing: 1px;
-    margin-top: 5px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
 }
 
-/* Header Divider */
-.header-divider {
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, #FFD700 50%, transparent 100%);
-    width: 100%;
-}
-
-/* JobNest Header Section */
-.jobnest-header {
+/* ===== PORTAL SECTION ===== */
+.portal-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
+    padding: 18px 40px;
     gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.jobnest-branding {
+.portal-branding {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    min-width: 250px;
 }
 
-.logo-title {
+.portal-title {
     color: #fff;
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 36px;
+    font-weight: 800;
     letter-spacing: 2px;
     background: linear-gradient(135deg, #46c8ff 0%, #00ff88 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: glow 2s ease-in-out infinite;
     margin: 0;
+    animation: glow 2.5s ease-in-out infinite;
 }
 
 @keyframes glow {
     0%, 100% {
-        text-shadow: 0 0 20px rgba(70, 200, 255, 0.5);
+        filter: drop-shadow(0 0 10px rgba(70, 200, 255, 0.3));
     }
     50% {
-        text-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+        filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.4));
     }
 }
 
-.logo-subtitle {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
-    letter-spacing: 1px;
+.portal-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    margin-top: 5px;
-    margin: 0;
+    margin: 8px 0 0 0;
+    font-weight: 600;
 }
 
 @keyframes slideDown {
@@ -1065,10 +1063,10 @@ body::before {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    .college-header {
-        padding: 15px;
+    .college-banner {
+        padding: 15px 20px;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
     }
 
     .college-logo {
@@ -1078,32 +1076,43 @@ body::before {
 
     .college-name {
         font-size: 20px;
+        letter-spacing: 2px;
     }
 
     .college-motto {
-        font-size: 11px;
+        font-size: 10px;
+        letter-spacing: 1px;
     }
 
-    .jobnest-header {
+    .portal-section {
         flex-direction: column;
-        gap: 15px;
+        gap: 20px;
         padding: 15px 20px;
+        align-items: center;
     }
 
-    .jobnest-branding {
-        width: 100%;
-        align-items: center;
+    .portal-branding {
         text-align: center;
+        min-width: auto;
+    }
+
+    .portal-title {
+        font-size: 28px;
+    }
+
+    .portal-subtitle {
+        font-size: 10px;
     }
 
     .nav-modern {
         width: 100%;
         flex-wrap: wrap;
         justify-content: center;
+        gap: 10px;
     }
 
     .nav-btn-modern {
-        flex: 1;
+        flex: 0 1 calc(50% - 5px);
         min-width: 120px;
     }
 
@@ -1121,12 +1130,9 @@ body::before {
     }
 
     .section-header h2 {
-        font-size: 32px;
+        font-size: 28px;
     }
-
-    .logo-title {
-        font-size: 24px;
-    }
+}
 
     .modal-content-modern {
         padding: 25px;

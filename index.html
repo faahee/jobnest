@@ -13,44 +13,39 @@
     <div id="notificationContainer" class="notification-container"></div>
 
     <header class="header-modern">
-        <div class="header-container">
-            <!-- College Banner Section -->
-            <div class="college-header">
-                <img src="logo.png" alt="Loyola College Logo" class="college-logo">
-                <div class="college-text">
-                    <h2 class="college-name">LOYOLA COLLEGE</h2>
-                    <p class="college-motto">LUCEAT LUX VESTRA - Let Light Shine Forth</p>
-                </div>
+        <!-- College Branding Section - Top -->
+        <div class="college-banner">
+            <img src="logo.png" alt="Loyola College Logo" class="college-logo">
+            <div class="college-text">
+                <h2 class="college-name">LOYOLA COLLEGE</h2>
+                <p class="college-motto">LUCEAT LUX VESTRA - Let Light Shine Forth</p>
             </div>
+        </div>
 
-            <!-- Divider Line -->
-            <div class="header-divider"></div>
-
-            <!-- JobNest Section with Navigation -->
-            <div class="jobnest-header">
-                <div class="jobnest-branding">
-                    <h1 class="logo-title">
-                        <i class="fas fa-briefcase"></i> JobNest
-                    </h1>
-                    <p class="logo-subtitle">Department Level Placement Portal</p>
-                </div>
-                
-                <nav class="nav-modern">
-                    <button class="nav-btn-modern" onclick="showSection('jobs')">
-                        <i class="fas fa-briefcase"></i> Jobs
-                    </button>
-                    <button class="nav-btn-modern" onclick="showSection('recruiters')">
-                        <i class="fas fa-users"></i> Recruiters
-                    </button>
-                    <button class="nav-btn-modern" onclick="showSection('reports')">
-                        <i class="fas fa-chart-bar"></i> Reports
-                    </button>
-                    <button class="nav-btn-modern notification-btn" onclick="showNotifications()">
-                        <i class="fas fa-bell"></i> 
-                        <span id="notifCount" class="badge">0</span>
-                    </button>
-                </nav>
+        <!-- JobNest Portal Section -->
+        <div class="portal-section">
+            <div class="portal-branding">
+                <h1 class="portal-title">
+                    <i class="fas fa-briefcase"></i> JobNest
+                </h1>
+                <p class="portal-subtitle">Department Level Placement Portal</p>
             </div>
+            
+            <nav class="nav-modern">
+                <button class="nav-btn-modern" onclick="showSection('jobs')">
+                    <i class="fas fa-briefcase"></i> Jobs
+                </button>
+                <button class="nav-btn-modern" onclick="showSection('recruiters')">
+                    <i class="fas fa-users"></i> Recruiters
+                </button>
+                <button class="nav-btn-modern" onclick="showSection('reports')">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+                <button class="nav-btn-modern notification-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i> 
+                    <span id="notifCount" class="badge">0</span>
+                </button>
+            </nav>
         </div>
     </header>
 
