@@ -42,8 +42,15 @@ body::before {
     animation: slideDown 0.6s ease-out;
 }
 
-/* College Logo Banner */
-.college-logo-banner {
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* College Header Section */
+.college-header {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,7 +58,6 @@ body::before {
     padding: 20px;
     background: linear-gradient(135deg, rgba(0, 61, 122, 0.15) 0%, rgba(255, 215, 0, 0.15) 100%);
     border-bottom: 3px solid #FFD700;
-    backdrop-filter: blur(5px);
 }
 
 .college-logo {
@@ -60,6 +66,7 @@ body::before {
     object-fit: contain;
     filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 61, 122, 0.3));
     animation: logoFloat 3s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 @keyframes logoFloat {
@@ -71,13 +78,13 @@ body::before {
     }
 }
 
-.college-info {
+.college-text {
     text-align: center;
 }
 
 .college-name {
     color: #FFD700;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 700;
     letter-spacing: 2px;
     margin: 0;
@@ -93,27 +100,23 @@ body::before {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Header Divider */
+.header-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #FFD700 50%, transparent 100%);
+    width: 100%;
 }
 
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
+/* JobNest Header Section */
+.jobnest-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    padding: 15px 40px;
+    gap: 30px;
 }
 
-.logo-section {
+.jobnest-branding {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -129,6 +132,7 @@ body::before {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: glow 2s ease-in-out infinite;
+    margin: 0;
 }
 
 @keyframes glow {
@@ -146,6 +150,18 @@ body::before {
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-top: 5px;
+    margin: 0;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .nav-modern {
@@ -1049,7 +1065,7 @@ body::before {
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
-    .college-logo-banner {
+    .college-header {
         padding: 15px;
         flex-direction: column;
         gap: 10px;
@@ -1061,17 +1077,23 @@ body::before {
     }
 
     .college-name {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .college-motto {
         font-size: 11px;
     }
 
-    .header-content {
+    .jobnest-header {
         flex-direction: column;
-        gap: 20px;
-        padding: 0 20px;
+        gap: 15px;
+        padding: 15px 20px;
+    }
+
+    .jobnest-branding {
+        width: 100%;
+        align-items: center;
+        text-align: center;
     }
 
     .nav-modern {
