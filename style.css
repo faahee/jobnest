@@ -38,20 +38,8 @@ body::before {
     top: 0;
     z-index: 100;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    animation: slideDown 0.6s ease-out;
     display: flex;
     flex-direction: column;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* ===== COLLEGE BANNER ===== */
@@ -127,17 +115,6 @@ body::before {
     flex-wrap: wrap;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .nav-modern {
     display: flex;
     gap: 15px;
@@ -205,18 +182,8 @@ body::before {
     justify-content: center;
     font-size: 13px;
     font-weight: bold;
-    animation: pulse 2s infinite;
     box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
     border: 2px solid white;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
 }
 
 /* ===== CONTAINER & SECTION STYLES ===== */
@@ -228,33 +195,11 @@ body::before {
 
 .section-modern {
     padding: 60px 40px;
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .section-header {
     text-align: center;
     margin-bottom: 50px;
-    animation: slideUp 0.8s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .section-header h2 {
@@ -296,26 +241,13 @@ body::before {
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border: 2px solid rgba(70, 200, 255, 0.1);
-    animation: scaleIn 0.6s ease-out;
-    animation-fill-mode: both;
 }
 
-.job-card:nth-child(1) { animation-delay: 0.1s; }
-.job-card:nth-child(2) { animation-delay: 0.2s; }
-.job-card:nth-child(3) { animation-delay: 0.3s; }
-.job-card:nth-child(4) { animation-delay: 0.4s; }
-.job-card:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
+.job-card:nth-child(1) { }
+.job-card:nth-child(2) { }
+.job-card:nth-child(3) { }
+.job-card:nth-child(4) { }
+.job-card:nth-child(5) { }
 
 .job-card::before {
     content: '';
@@ -330,16 +262,7 @@ body::before {
 }
 
 .job-card:hover::before {
-    animation: shine 0.6s;
-}
-
-@keyframes shine {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
+    transform: translateX(100%) translateY(100%) rotate(45deg);
 }
 
 .job-card:hover {
@@ -398,16 +321,7 @@ body::before {
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
+    transition: all 0.3s;
 }
 
 .position {
@@ -497,14 +411,13 @@ body::before {
     transition: all 0.4s ease;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     border: 2px solid rgba(70, 200, 255, 0.1);
-    animation: scaleIn 0.6s ease-out forwards;
 }
 
-.recruiter-card:nth-child(1) { animation-delay: 0.1s; }
-.recruiter-card:nth-child(2) { animation-delay: 0.2s; }
-.recruiter-card:nth-child(3) { animation-delay: 0.3s; }
-.recruiter-card:nth-child(4) { animation-delay: 0.4s; }
-.recruiter-card:nth-child(5) { animation-delay: 0.5s; }
+.recruiter-card:nth-child(1) { }
+.recruiter-card:nth-child(2) { }
+.recruiter-card:nth-child(3) { }
+.recruiter-card:nth-child(4) { }
+.recruiter-card:nth-child(5) { }
 
 .recruiter-card:hover {
     transform: translateY(-15px) scale(1.02);
@@ -520,15 +433,6 @@ body::before {
 
 .recruiter-card:hover .recruiter-avatar {
     transform: scale(1.1);
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
 }
 
 .recruiter-card h3 {
@@ -583,7 +487,6 @@ body::before {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     margin-bottom: 50px;
-    animation: fadeIn 0.8s ease-out;
 }
 
 .report-card {
@@ -620,7 +523,6 @@ body::before {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     margin-top: 40px;
-    animation: fadeIn 1s ease-out;
 }
 
 .stat-card {
@@ -669,16 +571,6 @@ body::before {
     backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
-    animation: fadeInModal 0.3s ease;
-}
-
-@keyframes fadeInModal {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 .modal-content-modern {
@@ -691,22 +583,10 @@ body::before {
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(70, 200, 255, 0.2);
-    animation: slideInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .modal-content-modern.large {
     max-width: 700px;
-}
-
-@keyframes slideInModal {
-    from {
-        opacity: 0;
-        transform: scale(0.9) translateY(50px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
 }
 
 .close-modal {
@@ -925,36 +805,6 @@ body::before {
 .notification-warning {
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     border-color: rgba(245, 158, 11, 0.4);
-}
-
-.notification.animate-in {
-    animation: slideInNotif 0.4s ease-out;
-}
-
-.notification.animate-out {
-    animation: slideOutNotif 0.3s ease-in;
-}
-
-@keyframes slideInNotif {
-    from {
-        transform: translateX(400px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideOutNotif {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(400px);
-        opacity: 0;
-    }
 }
 
 /* ===== NOTIFICATIONS LIST ===== */
