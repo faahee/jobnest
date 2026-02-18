@@ -1,252 +1,675 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>JobNest</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobNest - Department Placement System</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1>JobNest - Department Level Placement System</h1>
-        <nav>
-            <button class="nav-btn" onclick="showSection('jobs')">Available Jobs</button>
-            <button class="nav-btn" onclick="showSection('recruiters')">Recruiters</button>
-            <button class="nav-btn" onclick="showRegisterModal()">Register</button>
-        </nav>
+    <!-- Notification Container -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <header class="header-modern">
+        <div class="header-content">
+            <div class="logo-section">
+                <h1 class="logo-title">
+                    <i class="fas fa-briefcase"></i> JobNest
+                </h1>
+                <p class="logo-subtitle">Department Level Placement Portal</p>
+            </div>
+            <nav class="nav-modern">
+                <button class="nav-btn-modern" onclick="showSection('jobs')">
+                    <i class="fas fa-briefcase"></i> Jobs
+                </button>
+                <button class="nav-btn-modern" onclick="showSection('recruiters')">
+                    <i class="fas fa-users"></i> Recruiters
+                </button>
+                <button class="nav-btn-modern" onclick="showSection('reports')">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+                <button class="nav-btn-modern notification-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i> 
+                    <span id="notifCount" class="badge">0</span>
+                </button>
+            </nav>
+        </div>
     </header>
 
-    <!-- Registration Modal -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('registerModal')">&times;</span>
-            <h2>Create Account</h2>
-            <div id="errorMsg" style="color: red; margin-bottom: 10px; display: none;"></div>
-            <form id="registerForm" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="regName" required>
+    <!-- Available Jobs Section -->
+    <div id="jobsSection" class="section-modern container">
+        <div class="section-header">
+            <h2><i class="fas fa-rocket"></i> Available Job Opportunities</h2>
+            <p class="section-subtitle">Explore exciting opportunities from top companies</p>
+        </div>
+        <div id="jobsGrid" class="jobs-grid">
+            <!-- Jobs will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Recruiters Section -->
+    <div id="recruitersSection" class="section-modern container" style="display: none;">
+        <div class="section-header">
+            <h2><i class="fas fa-handshake"></i> Our Recruiters</h2>
+            <p class="section-subtitle">Meet with the companies hiring</p>
+        </div>
+        <div id="recruitersGrid" class="recruiters-grid">
+            <!-- Recruiters will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Reports Section -->
+    <div id="reportsSection" class="section-modern container" style="display: none;">
+        <div class="section-header">
+            <h2><i class="fas fa-chart-bar"></i> Placement Reports & Analytics</h2>
+            <p class="section-subtitle">Track placement trends and statistics from actual applications</p>
+        </div>
+
+        <div class="reports-grid">
+            <div class="report-card">
+                <h3><i class="fas fa-building"></i> Applications by Company</h3>
+                <canvas id="applicationsChart"></canvas>
+            </div>
+            <div class="report-card">
+                <h3><i class="fas fa-graduation-cap"></i> Departments Applying</h3>
+                <canvas id="departmentsChart"></canvas>
+            </div>
+            <div class="report-card">
+                <h3><i class="fas fa-chart-line"></i> CGPA Distribution</h3>
+                <canvas id="cgpaChart"></canvas>
+            </div>
+            <div class="report-card">
+                <h3><i class="fas fa-clock"></i> Application Timeline</h3>
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalJobs">0</div>
+                <div class="stat-label">Total Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalApplications">0</div>
+                <div class="stat-label">Applications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgCGPA">0.00</div>
+                <div class="stat-label">Avg CGPA</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCompanies">0</div>
+                <div class="stat-label">Companies</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div id="notificationModal" class="modal-modern">
+        <div class="modal-content-modern">
+            <span class="close-modal" onclick="closeNotificationModal()">&times;</span>
+            <h2><i class="fas fa-bell"></i> Your Notifications</h2>
+            <div id="notificationsList" class="notifications-list">
+                <!-- Notifications will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Details Modal -->
+    <div id="studentModal" class="modal-modern">
+        <div class="modal-content-modern large">
+            <span class="close-modal" onclick="closeStudentModal()">&times;</span>
+            <h2><i class="fas fa-graduation-cap"></i> Student Application Details</h2>
+            <form id="studentForm" onsubmit="submitApplication(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Full Name *</label>
+                        <input type="text" id="studentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email *</label>
+                        <input type="email" id="studentEmail" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="regEmail" required>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Phone Number *</label>
+                        <input type="tel" id="studentPhone" required pattern="[0-9]{10}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-graduation-cap"></i> Roll Number *</label>
+                        <input type="text" id="studentRoll" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <select id="regRole" required>
-                        <option value="">Select Role</option>
-                        <option value="student">Student</option>
-                        <option value="recruiter">Recruiter</option>
-                        <option value="faculty">Faculty</option>
-                    </select>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-book"></i> Department *</label>
+                        <select id="studentDept" required>
+                            <option value="">Select Department</option>
+                            <option value="CSE">Computer Science</option>
+                            <option value="ECE">Electronics</option>
+                            <option value="ME">Mechanical</option>
+                            <option value="CE">Civil</option>
+                            <option value="EEE">Electrical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-percent"></i> CGPA *</label>
+                        <input type="number" id="studentCGPA" min="0" max="10" step="0.01" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="regPassword" required>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-file-pdf"></i> Resume *</label>
+                        <div class="file-upload">
+                            <input type="file" id="studentResume" accept=".pdf,.doc,.docx" required onchange="handleResumeUpload(event)">
+                            <span id="resumeFileName" class="resume-name">No file chosen</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-sticky-note"></i> Cover Letter</label>
+                        <textarea id="studentCoverLetter" rows="3" placeholder="Brief cover letter (optional)"></textarea>
+                    </div>
                 </div>
-                <button type="submit">Register</button>
+
+                <div class="form-group">
+                    <label><i class="fas fa-link"></i> Portfolio/LinkedIn Link</label>
+                    <input type="url" id="studentPortfolio" placeholder="https://...">
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Application
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Available Jobs Section -->
-    <div id="jobsSection" class="section container">
-        <h2>Available Job Offers</h2>
-        <table id="jobsTable">
-            <thead>
-                <tr>
-                    <th>Company</th>
-                    <th>Position</th>
-                    <th>Location</th>
-                    <th>Salary</th>
-                    <th>Recruiter</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="jobsBody">
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Recruiters Section -->
-    <div id="recruitersSection" class="section container" style="display: none;">
-        <h2>Recruiters</h2>
-        <table id="recruitersTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Company</th>
-                </tr>
-            </thead>
-            <tbody id="recruitersBody">
-            </tbody>
-        </table>
-    </div>
+    <footer class="footer-modern">
+        <div class="footer-content">
+            <p>&copy; 2026 JobNest - Department Level Placement System. All rights reserved.</p>
+            <p>Connecting Talent with Opportunity | Building Futures</p>
+        </div>
+    </footer>
 
     <script>
-        // Mock data for jobs and recruiters
+        // Real company data with actual websites
         const jobsData = [
-            { id: 1, company: 'Tech Corp', position: 'Software Engineer', location: 'New York', salary: '$80,000 - $120,000', recruiter_name: 'John Smith' },
-            { id: 2, company: 'Data Solutions', position: 'Data Analyst', location: 'San Francisco', salary: '$70,000 - $110,000', recruiter_name: 'Sarah Johnson' },
-            { id: 3, company: 'Cloud Systems', position: 'Cloud Architect', location: 'Seattle', salary: '$100,000 - $150,000', recruiter_name: 'Mike Chen' },
-            { id: 4, company: 'Web Designs', position: 'Frontend Developer', location: 'Los Angeles', salary: '$60,000 - $100,000', recruiter_name: 'Emily Davis' },
-            { id: 5, company: 'Mobile Apps Inc', position: 'Mobile Developer', location: 'Boston', salary: '$75,000 - $115,000', recruiter_name: 'David Wilson' }
+            { id: 1, company: 'Google', position: 'Software Engineer', location: 'Mountain View, California', salary: '$120,000 - $180,000', recruiter_name: 'Sarah Chen', website: 'https://www.google.com', openings: 8 },
+            { id: 2, company: 'Amazon', position: 'Full Stack Developer', location: 'Seattle, Washington', salary: '$110,000 - $170,000', recruiter_name: 'Marcus Johnson', website: 'https://www.amazon.com', openings: 12 },
+            { id: 3, company: 'Meta', position: 'Backend Engineer', location: 'Menlo Park, California', salary: '$130,000 - $190,000', recruiter_name: 'Priya Patel', website: 'https://www.meta.com', openings: 6 },
+            { id: 4, company: 'Microsoft', position: 'Cloud Solutions Architect', location: 'Redmond, Washington', salary: '$115,000 - $175,000', recruiter_name: 'David Kumar', website: 'https://www.microsoft.com', openings: 9 },
+            { id: 5, company: 'Apple', position: 'iOS Developer', location: 'Cupertino, California', salary: '$125,000 - $185,000', recruiter_name: 'Emma Williams', website: 'https://www.apple.com', openings: 5 },
+            { id: 6, company: 'IBM', position: 'Enterprise Solutions Engineer', location: 'Armonk, New York', salary: '$100,000 - $155,000', recruiter_name: 'Robert Smith', website: 'https://www.ibm.com', openings: 7 },
+            { id: 7, company: 'TCS', position: 'Software Developer', location: 'Mumbai, India', salary: '₹6,00,000 - ₹12,00,000', recruiter_name: 'Raj Sharma', website: 'https://www.tcs.com', openings: 50 },
+            { id: 8, company: 'Infosys', position: 'Systems Engineer', location: 'Bangalore, India', salary: '₹5,50,000 - ₹11,00,000', recruiter_name: 'Anjali Desai', website: 'https://www.infosys.com', openings: 45 },
+            { id: 9, company: 'Capgemini', position: 'Java Developer', location: 'Pune, India', salary: '₹6,50,000 - ₹13,00,000', recruiter_name: 'Vikram Gupta', website: 'https://www.capgemini.com', openings: 38 },
+            { id: 10, company: 'Accenture', position: 'Cloud Engineer', location: 'Bangalore, India', salary: '₹7,00,000 - ₹14,00,000', recruiter_name: 'Neha Reddy', website: 'https://www.accenture.com', openings: 42 },
+            { id: 11, company: 'Wipro', position: 'Software Analyst', location: 'Hyderabad, India', salary: '₹5,75,000 - ₹10,50,000', recruiter_name: 'Ramesh Iyer', website: 'https://www.wipro.com', openings: 48 },
+            { id: 12, company: 'HCL Technologies', position: 'DevOps Engineer', location: 'Noida, India', salary: '₹7,50,000 - ₹14,50,000', recruiter_name: 'Shreya Mishra', website: 'https://www.hcltech.com', openings: 35 },
+            { id: 13, company: 'Cognizant', position: 'QA Engineer', location: 'Chennai, India', salary: '₹5,25,000 - ₹9,75,000', recruiter_name: 'Arun Kumar', website: 'https://www.cognizant.com', openings: 40 },
+            { id: 14, company: 'Tech Mahindra', position: 'Network Engineer', location: 'Pune, India', salary: '₹6,00,000 - ₹11,00,000', recruiter_name: 'Divya Patel', website: 'https://www.techmahindra.com', openings: 36 },
+            { id: 15, company: 'Deloitte', position: 'Management Consultant', location: 'New York, USA', salary: '$95,000 - $150,000', recruiter_name: 'Jennifer Anderson', website: 'https://www.deloitte.com', openings: 10 },
+            { id: 16, company: 'Goldman Sachs', position: 'Quantitative Analyst', location: 'New York, USA', salary: '$150,000 - $250,000', recruiter_name: 'Michael Chen', website: 'https://www.goldmansachs.com', openings: 4 },
+            { id: 17, company: 'JPMorgan Chase', position: 'Software Engineer', location: 'Manhattan, USA', salary: '$120,000 - $200,000', recruiter_name: 'Lisa Thompson', website: 'https://www.jpmorganchase.com', openings: 8 }
         ];
 
         const recruitersData = [
-            { id: 1, name: 'John Smith', email: 'john.smith@techcorp.com', company: 'Tech Corp' },
-            { id: 2, name: 'Sarah Johnson', email: 'sarah.johnson@datasolutions.com', company: 'Data Solutions' },
-            { id: 3, name: 'Mike Chen', email: 'mike.chen@cloudsystems.com', company: 'Cloud Systems' },
-            { id: 4, name: 'Emily Davis', email: 'emily.davis@webdesigns.com', company: 'Web Designs' },
-            { id: 5, name: 'David Wilson', email: 'david.wilson@mobileapps.com', company: 'Mobile Apps Inc' }
+            { id: 1, name: 'Sarah Chen', email: 'sarah.chen@google.com', company: 'Google', website: 'https://www.google.com' },
+            { id: 2, name: 'Marcus Johnson', email: 'marcus.j@amazon.com', company: 'Amazon', website: 'https://www.amazon.com' },
+            { id: 3, name: 'Priya Patel', email: 'priya.patel@meta.com', company: 'Meta', website: 'https://www.meta.com' },
+            { id: 4, name: 'David Kumar', email: 'david.kumar@microsoft.com', company: 'Microsoft', website: 'https://www.microsoft.com' },
+            { id: 5, name: 'Emma Williams', email: 'emma.williams@apple.com', company: 'Apple', website: 'https://www.apple.com' },
+            { id: 6, name: 'Robert Smith', email: 'robert.smith@ibm.com', company: 'IBM', website: 'https://www.ibm.com' },
+            { id: 7, name: 'Raj Sharma', email: 'raj.sharma@tcs.co.in', company: 'TCS', website: 'https://www.tcs.com' },
+            { id: 8, name: 'Anjali Desai', email: 'anjali.desai@infosys.com', company: 'Infosys', website: 'https://www.infosys.com' },
+            { id: 9, name: 'Vikram Gupta', email: 'vikram.gupta@capgemini.com', company: 'Capgemini', website: 'https://www.capgemini.com' },
+            { id: 10, name: 'Neha Reddy', email: 'neha.reddy@accenture.com', company: 'Accenture', website: 'https://www.accenture.com' },
+            { id: 11, name: 'Ramesh Iyer', email: 'ramesh.iyer@wipro.com', company: 'Wipro', website: 'https://www.wipro.com' },
+            { id: 12, name: 'Shreya Mishra', email: 'shreya.mishra@hcltech.com', company: 'HCL Technologies', website: 'https://www.hcltech.com' },
+            { id: 13, name: 'Arun Kumar', email: 'arun.kumar@cognizant.com', company: 'Cognizant', website: 'https://www.cognizant.com' },
+            { id: 14, name: 'Divya Patel', email: 'divya.patel@techmahindra.com', company: 'Tech Mahindra', website: 'https://www.techmahindra.com' },
+            { id: 15, name: 'Jennifer Anderson', email: 'jennifer.anderson@deloitte.com', company: 'Deloitte', website: 'https://www.deloitte.com' },
+            { id: 16, name: 'Michael Chen', email: 'michael.chen@goldmansachs.com', company: 'Goldman Sachs', website: 'https://www.goldmansachs.com' },
+            { id: 17, name: 'Lisa Thompson', email: 'lisa.thompson@jpmorganchase.com', company: 'JPMorgan Chase', website: 'https://www.jpmorganchase.com' }
         ];
 
-        function showSection(sectionId) {
-            document.getElementById('jobsSection').style.display = sectionId === 'jobs' ? 'block' : 'none';
-            document.getElementById('recruitersSection').style.display = sectionId === 'recruiters' ? 'block' : 'none';
-            
-            if (sectionId === 'recruiters') {
-                loadRecruiters();
-            } else {
-                loadJobs();
-            }
-        }
+        let currentJobId = null;
+        let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+        let applications = JSON.parse(localStorage.getItem('applications') || '[]');
 
-        function showRegisterModal() {
-            document.getElementById('registerModal').style.display = 'block';
-            resetRegisterForm();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            resetRegisterForm();
-        }
-
-        function resetRegisterForm() {
-            document.getElementById('registerForm').reset();
-            document.getElementById('errorMsg').style.display = 'none';
-        }
-
-        function showError(message) {
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.textContent = message;
-            errorMsg.style.display = 'block';
-        }
-
-        async function handleRegister(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const role = document.getElementById('regRole').value;
-
-            // Validate
-            if (!name || !email || !password || !role) {
-                showError('All fields are required');
+        // Show toast notification
+        function showNotification(message, type = 'success') {
+            const container = document.getElementById('notificationContainer');
+            if (!container) {
+                console.error('Notification container not found');
                 return;
             }
 
-            if (password.length < 6) {
-                showError('Password must be at least 6 characters');
-                return;
-            }
+            const notif = document.createElement('div');
+            notif.className = `notification notification-${type} animate-in`;
+            notif.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(notif);
 
-            // Get existing users from localStorage
-            let users = JSON.parse(localStorage.getItem('users') || '[]');
-            
-            // Check if email already exists
-            if (users.some(u => u.email === email)) {
-                showError('Email already registered');
-                return;
-            }
-
-            // Add new user
-            users.push({
-                id: users.length + 1,
-                name,
-                email,
-                password, // Note: In production, never store passwords in plain text
-                role,
-                company: role === 'recruiter' ? 'Company Name' : null
-            });
-
-            localStorage.setItem('users', JSON.stringify(users));
-            alert('Registration successful! You can now explore job offers and recruiters.');
-            closeModal('registerModal');
+            setTimeout(() => {
+                notif.classList.remove('animate-in');
+                notif.classList.add('animate-out');
+                setTimeout(() => {
+                    if (notif.parentNode) {
+                        notif.remove();
+                    }
+                }, 300);
+            }, 3000);
         }
 
-        function loadJobs() {
-            const tbody = document.getElementById('jobsBody');
-            tbody.innerHTML = '';
-            
-            jobsData.forEach(job => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${job.company}</td>
-                    <td>${job.position}</td>
-                    <td>${job.location}</td>
-                    <td>${job.salary}</td>
-                    <td>${job.recruiter_name}</td>
-                    <td><button class="apply-btn" onclick="applyForJob(${job.id})">Apply Now</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function applyForJob(jobId) {
-            const user = JSON.parse(localStorage.getItem('currentUser'));
-            
-            if (!user) {
-                alert('Please register or log in to apply for jobs');
-                showRegisterModal();
-                return;
+        // Add notification to list
+        function addNotification(title, message, type = 'info') {
+            try {
+                const notif = {
+                    id: Date.now(),
+                    title: title || 'Notification',
+                    message: message || '',
+                    type: type || 'info',
+                    timestamp: new Date().toLocaleString(),
+                    read: false
+                };
+                notifications.unshift(notif);
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+                updateNotificationBadge();
+            } catch (e) {
+                console.error('Error adding notification:', e);
             }
+        }
 
-            // Get existing applications
-            let applications = JSON.parse(localStorage.getItem('applications') || '[]');
-            
-            // Check if already applied
-            if (applications.some(app => app.user_id === user.id && app.job_id === jobId)) {
-                alert('You have already applied to this job');
-                return;
+        function updateNotificationBadge() {
+            try {
+                const badge = document.getElementById('notifCount');
+                if (badge) {
+                    const count = notifications.filter(n => !n.read).length;
+                    badge.textContent = count > 0 ? count : '';
+                    badge.style.display = count > 0 ? 'flex' : 'none';
+                }
+            } catch (e) {
+                console.error('Error updating badge:', e);
             }
-
-            // Add new application
-            applications.push({
-                id: applications.length + 1,
-                user_id: user.id,
-                job_id: jobId,
-                applied_at: new Date().toISOString()
-            });
-
-            localStorage.setItem('applications', JSON.stringify(applications));
-            alert('Application submitted successfully! Good luck!');
         }
 
-        function loadRecruiters() {
-            const tbody = document.getElementById('recruitersBody');
-            tbody.innerHTML = '';
-            
-            recruitersData.forEach(recruiter => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${recruiter.name}</td>
-                    <td>${recruiter.email}</td>
-                    <td>${recruiter.company || 'N/A'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
+        function showNotifications() {
+            try {
+                const modal = document.getElementById('notificationModal');
+                if (!modal) {
+                    console.error('Notification modal not found');
+                    return;
+                }
+                
+                modal.style.display = 'flex';
+                const notifList = document.getElementById('notificationsList');
+                notifList.innerHTML = '';
+
+                if (notifications.length === 0) {
+                    notifList.innerHTML = '<p class="empty-state"><i class="fas fa-inbox"></i> No notifications yet</p>';
+                } else {
+                    notifications.forEach(notif => {
+                        const div = document.createElement('div');
+                        div.className = `notification-item ${notif.read ? 'read' : 'unread'}`;
+                        const iconClass = notif.type === 'success' ? 'check' : 
+                                         notif.type === 'warning' ? 'exclamation' : 
+                                         notif.type === 'error' ? 'times' : 'info-circle';
+                        div.innerHTML = `
+                            <div class="notif-icon notif-${notif.type}">
+                                <i class="fas fa-${iconClass}"></i>
+                            </div>
+                            <div class="notif-content">
+                                <h4>${notif.title}</h4>
+                                <p>${notif.message}</p>
+                                <small>${notif.timestamp}</small>
+                            </div>
+                        `;
+                        notifList.appendChild(div);
+                    });
+                }
+
+                notifications.forEach(n => n.read = true);
+                localStorage.setItem('notifications', JSON.stringify(notifications));
+                updateNotificationBadge();
+            } catch (e) {
+                console.error('Error showing notifications:', e);
+            }
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('registerModal');
-            if (event.target === modal) {
+        function closeNotificationModal() {
+            const modal = document.getElementById('notificationModal');
+            if (modal) {
                 modal.style.display = 'none';
             }
         }
 
-        // Load jobs on page load
-        window.addEventListener('DOMContentLoaded', loadJobs);
+        function showSection(sectionId) {
+            document.getElementById('jobsSection').style.display = sectionId === 'jobs' ? 'block' : 'none';
+            document.getElementById('recruitersSection').style.display = sectionId === 'recruiters' ? 'block' : 'none';
+            document.getElementById('reportsSection').style.display = sectionId === 'reports' ? 'block' : 'none';
+
+            if (sectionId === 'recruiters') {
+                loadRecruiters();
+            } else if (sectionId === 'jobs') {
+                loadJobs();
+            } else if (sectionId === 'reports') {
+                setTimeout(loadReports, 100);
+            }
+        }
+
+        function loadJobs() {
+            const grid = document.getElementById('jobsGrid');
+            grid.innerHTML = '';
+
+            jobsData.forEach(job => {
+                const card = document.createElement('div');
+                card.className = 'job-card';
+                card.innerHTML = `
+                    <div class="job-header">
+                        <h3>
+                            <a href="${job.website}" target="_blank" class="company-link">
+                                ${job.company}
+                            </a>
+                        </h3>
+                        <span class="openings-badge">${job.openings} openings</span>
+                    </div>
+                    <h4 class="position">${job.position}</h4>
+                    <div class="job-details">
+                        <p><i class="fas fa-map-marker-alt"></i> ${job.location}</p>
+                        <p><i class="fas fa-dollar-sign"></i> ${job.salary}</p>
+                        <p><i class="fas fa-user-tie"></i> ${job.recruiter_name}</p>
+                    </div>
+                    <button class="apply-btn-modern" onclick="openStudentModal(${job.id})">
+                        <i class="fas fa-arrow-right"></i> Apply Now
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openStudentModal(jobId) {
+            currentJobId = jobId;
+            document.getElementById('studentModal').style.display = 'flex';
+            document.getElementById('studentForm').reset();
+            document.getElementById('resumeFileName').textContent = 'No file chosen';
+        }
+
+        function closeStudentModal() {
+            document.getElementById('studentModal').style.display = 'none';
+            currentJobId = null;
+        }
+
+        function handleResumeUpload(event) {
+            const fileName = event.target.files[0]?.name || 'No file chosen';
+            document.getElementById('resumeFileName').textContent = fileName;
+        }
+
+        function submitApplication(event) {
+            event.preventDefault();
+
+            try {
+                const job = jobsData.find(j => j.id === currentJobId);
+                if (!job) {
+                    showNotification('Error: Job not found', 'error');
+                    return;
+                }
+
+                const resumeFile = document.getElementById('studentResume').files[0];
+                const resumeFileName = resumeFile ? resumeFile.name : 'Not uploaded';
+
+                const studentData = {
+                    id: Date.now(),
+                    jobId: currentJobId,
+                    name: document.getElementById('studentName').value,
+                    email: document.getElementById('studentEmail').value,
+                    phone: document.getElementById('studentPhone').value,
+                    rollNumber: document.getElementById('studentRoll').value,
+                    department: document.getElementById('studentDept').value,
+                    cgpa: document.getElementById('studentCGPA').value,
+                    resume: resumeFileName,
+                    coverLetter: document.getElementById('studentCoverLetter').value,
+                    portfolio: document.getElementById('studentPortfolio').value,
+                    appliedAt: new Date().toLocaleString(),
+                    status: 'Pending'
+                };
+
+                applications.push(studentData);
+                localStorage.setItem('applications', JSON.stringify(applications));
+
+                // Show success notification toast
+                showNotification('✓ Application submitted successfully!', 'success');
+                
+                // Add to notification history
+                addNotification(
+                    'Application Submitted',
+                    `Your application for ${job.position} at ${job.company} has been submitted successfully. Resume: ${resumeFileName}`,
+                    'success'
+                );
+
+                closeStudentModal();
+                setTimeout(() => loadReports(), 100);
+            } catch (e) {
+                console.error('Error submitting application:', e);
+                showNotification('Error submitting application', 'error');
+            }
+        }
+
+        function loadRecruiters() {
+            const grid = document.getElementById('recruitersGrid');
+            grid.innerHTML = '';
+
+            recruitersData.forEach(recruiter => {
+                const card = document.createElement('div');
+                card.className = 'recruiter-card';
+                card.innerHTML = `
+                    <div class="recruiter-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>${recruiter.name}</h3>
+                    <p class="recruiter-company">
+                        <a href="${recruiter.website}" target="_blank">${recruiter.company}</a>
+                    </p>
+                    <p class="recruiter-email">
+                        <i class="fas fa-envelope"></i> ${recruiter.email}
+                    </p>
+                    <a href="${recruiter.website}" class="website-link" target="_blank">
+                        Visit Company <i class="fas fa-external-link-alt"></i>
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function loadReports() {
+            // Calculate statistics from ACTUAL applications
+            const totalJobs = jobsData.length;
+            const totalApplications = applications.length;
+            const totalCompanies = [...new Set(jobsData.map(j => j.company))].length;
+
+            // Calculate average CGPA from applications
+            const avgCGPA = applications.length > 0 
+                ? (applications.reduce((sum, app) => sum + parseFloat(app.cgpa), 0) / applications.length).toFixed(2)
+                : '0.00';
+
+            document.getElementById('totalJobs').textContent = totalJobs;
+            document.getElementById('totalApplications').textContent = totalApplications;
+            document.getElementById('avgCGPA').textContent = avgCGPA;
+            document.getElementById('totalCompanies').textContent = totalCompanies;
+
+            // Companies from actual applications
+            const companyCount = {};
+            applications.forEach(app => {
+                const job = jobsData.find(j => j.id === app.jobId);
+                if (job) {
+                    companyCount[job.company] = (companyCount[job.company] || 0) + 1;
+                }
+            });
+
+            // Departments from applications
+            const deptCount = {};
+            applications.forEach(app => {
+                deptCount[app.department] = (deptCount[app.department] || 0) + 1;
+            });
+
+            // CGPA ranges
+            const cgpaRanges = {
+                '8.5 - 10': 0,
+                '7.5 - 8.4': 0,
+                '6.5 - 7.4': 0,
+                '< 6.5': 0
+            };
+            applications.forEach(app => {
+                const cgpa = parseFloat(app.cgpa);
+                if (cgpa >= 8.5) cgpaRanges['8.5 - 10']++;
+                else if (cgpa >= 7.5) cgpaRanges['7.5 - 8.4']++;
+                else if (cgpa >= 6.5) cgpaRanges['6.5 - 7.4']++;
+                else cgpaRanges['< 6.5']++;
+            });
+
+            // Destroy existing charts
+            Chart.helpers.each(Chart.instances, instance => instance.destroy());
+
+            // Applications by Company Chart
+            const companyLabels = Object.keys(companyCount).length > 0 ? Object.keys(companyCount) : ['No Applications'];
+            const companyValues = Object.keys(companyCount).length > 0 ? Object.values(companyCount) : [0];
+            
+            new Chart(document.getElementById('applicationsChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: companyLabels,
+                    datasets: [{
+                        data: companyValues,
+                        backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#FFB3BA', '#A8E6CF', '#FFD3B6', '#FFAAA5', '#FF8B94', '#B19CD9', '#87E8DE', '#FFB347', '#87CEEB', '#DDA0DD']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Departments Chart
+            const deptLabels = Object.keys(deptCount).length > 0 ? Object.keys(deptCount) : ['No Applications'];
+            const deptValues = Object.keys(deptCount).length > 0 ? Object.values(deptCount) : [0];
+            
+            new Chart(document.getElementById('departmentsChart'), {
+                type: 'bar',
+                data: {
+                    labels: deptLabels,
+                    datasets: [{
+                        label: 'Applications',
+                        data: deptValues,
+                        backgroundColor: '#45B7D1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // CGPA Distribution Chart
+            new Chart(document.getElementById('cgpaChart'), {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(cgpaRanges),
+                    datasets: [{
+                        label: 'Student Count',
+                        data: Object.values(cgpaRanges),
+                        backgroundColor: '#FF6B6B'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            // Timeline Chart
+            const today = new Date().toLocaleDateString();
+            const timelineData = {};
+            applications.forEach(app => {
+                const date = app.appliedAt.split(',')[0];
+                timelineData[date] = (timelineData[date] || 0) + 1;
+            });
+
+            const timelineLabels = Object.keys(timelineData).length > 0 ? Object.keys(timelineData) : [today];
+            const timelineValues = Object.keys(timelineData).length > 0 ? Object.values(timelineData) : [0];
+            
+            new Chart(document.getElementById('timelineChart'), {
+                type: 'line',
+                data: {
+                    labels: timelineLabels,
+                    datasets: [{
+                        label: 'Applications',
+                        data: timelineValues,
+                        borderColor: '#00ff88',
+                        backgroundColor: 'rgba(0, 255, 136, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#46c8ff',
+                        pointBorderColor: '#00ff88',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        window.onclick = function(event) {
+            const studentModal = document.getElementById('studentModal');
+            const notificationModal = document.getElementById('notificationModal');
+            if (event.target === studentModal) studentModal.style.display = 'none';
+            if (event.target === notificationModal) notificationModal.style.display = 'none';
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('JobNest initialized');
+            loadJobs();
+            updateNotificationBadge();
+            
+            // Add sample notification on first visit
+            if (notifications.length === 0) {
+                addNotification(
+                    'Welcome to JobNest!',
+                    'Start exploring amazing job opportunities from top companies. Click "Apply Now" on any job to submit your application!',
+                    'info'
+                );
+            }
+        });
+
+        // Global function to test notifications (for debugging)
+        function testNotification() {
+            showNotification('✓ Test notification is working!', 'success');
+            addNotification('Test Notification', 'This is a test notification to verify the system is working.', 'info');
+        }
     </script>
 </body>
 </html>
