@@ -49,8 +49,8 @@ body::before {
     align-items: center;
     gap: 20px;
     padding: 20px;
-    background: linear-gradient(135deg, rgba(70, 200, 255, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
-    border-bottom: 2px solid rgba(70, 200, 255, 0.2);
+    background: linear-gradient(135deg, rgba(0, 61, 122, 0.15) 0%, rgba(255, 215, 0, 0.15) 100%);
+    border-bottom: 3px solid #FFD700;
     backdrop-filter: blur(5px);
 }
 
@@ -58,7 +58,7 @@ body::before {
     width: 80px;
     height: 80px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(70, 200, 255, 0.3));
+    filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4)) drop-shadow(0 2px 4px rgba(0, 61, 122, 0.3));
     animation: logoFloat 3s ease-in-out infinite;
 }
 
@@ -76,19 +76,21 @@ body::before {
 }
 
 .college-name {
-    color: #46c8ff;
+    color: #FFD700;
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 2px;
     margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 61, 122, 0.3);
 }
 
 .college-motto {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 13px;
     font-style: italic;
     letter-spacing: 1px;
     margin-top: 5px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes slideDown {
