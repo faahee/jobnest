@@ -131,12 +131,12 @@ body {
 
 .section-header h2 {
     font-size: 24px;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 8px;
 }
 
 .section-subtitle {
-    color: #666;
+    color: rgba(255, 255, 255, 0.85);
     font-size: 14px;
 }
 
