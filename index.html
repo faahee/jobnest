@@ -18,7 +18,7 @@
             <img src="logo.png" alt="Loyola College Logo" class="college-logo">
             <div class="college-text">
                 <h2 class="college-name">LOYOLA COLLEGE</h2>
-                <p class="college-motto">LUCEAT LUX VESTRA - Let Light Shine Forth</p>
+                <p class="college-motto">LUCEAT LUX VESTRA - Let Your Light Shine</p>
             </div>
         </div>
 
@@ -152,17 +152,16 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label><i class="fas fa-percent"></i> CGPA *</label>
-                        <input type="number" id="studentCGPA" min="0" max="10" step="0.01" required>
-                    </div>
+                <div class="form-group">
+                    <label><i class="fas fa-percent"></i> CGPA *</label>
+                    <input type="number" id="studentCGPA" min="0" max="10" step="0.01" required>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label><i class="fas fa-file-pdf"></i> Resume *</label>
                         <div class="file-upload">
+                            <label for="studentResume" class="file-upload-btn">Choose File</label>
                             <input type="file" id="studentResume" accept=".pdf,.doc,.docx" required onchange="handleResumeUpload(event)">
                             <span id="resumeFileName" class="resume-name">No file chosen</span>
                         </div>
@@ -197,41 +196,31 @@
         const jobsData = [
             { id: 1, company: 'Google', position: 'Software Engineer', location: 'Mountain View, California', salary: '$120,000 - $180,000', recruiter_name: 'Sarah Chen', website: 'https://www.google.com', openings: 8 },
             { id: 2, company: 'Amazon', position: 'Full Stack Developer', location: 'Seattle, Washington', salary: '$110,000 - $170,000', recruiter_name: 'Marcus Johnson', website: 'https://www.amazon.com', openings: 12 },
-            { id: 3, company: 'Meta', position: 'Backend Engineer', location: 'Menlo Park, California', salary: '$130,000 - $190,000', recruiter_name: 'Priya Patel', website: 'https://www.meta.com', openings: 6 },
-            { id: 4, company: 'Microsoft', position: 'Cloud Solutions Architect', location: 'Redmond, Washington', salary: '$115,000 - $175,000', recruiter_name: 'David Kumar', website: 'https://www.microsoft.com', openings: 9 },
-            { id: 5, company: 'Apple', position: 'iOS Developer', location: 'Cupertino, California', salary: '$125,000 - $185,000', recruiter_name: 'Emma Williams', website: 'https://www.apple.com', openings: 5 },
-            { id: 6, company: 'IBM', position: 'Enterprise Solutions Engineer', location: 'Armonk, New York', salary: '$100,000 - $155,000', recruiter_name: 'Robert Smith', website: 'https://www.ibm.com', openings: 7 },
-            { id: 7, company: 'TCS', position: 'Software Developer', location: 'Mumbai, India', salary: '₹6,00,000 - ₹12,00,000', recruiter_name: 'Raj Sharma', website: 'https://www.tcs.com', openings: 50 },
-            { id: 8, company: 'Infosys', position: 'Systems Engineer', location: 'Bangalore, India', salary: '₹5,50,000 - ₹11,00,000', recruiter_name: 'Anjali Desai', website: 'https://www.infosys.com', openings: 45 },
-            { id: 9, company: 'Capgemini', position: 'Java Developer', location: 'Pune, India', salary: '₹6,50,000 - ₹13,00,000', recruiter_name: 'Vikram Gupta', website: 'https://www.capgemini.com', openings: 38 },
-            { id: 10, company: 'Accenture', position: 'Cloud Engineer', location: 'Bangalore, India', salary: '₹7,00,000 - ₹14,00,000', recruiter_name: 'Neha Reddy', website: 'https://www.accenture.com', openings: 42 },
-            { id: 11, company: 'Wipro', position: 'Software Analyst', location: 'Hyderabad, India', salary: '₹5,75,000 - ₹10,50,000', recruiter_name: 'Ramesh Iyer', website: 'https://www.wipro.com', openings: 48 },
-            { id: 12, company: 'HCL Technologies', position: 'DevOps Engineer', location: 'Noida, India', salary: '₹7,50,000 - ₹14,50,000', recruiter_name: 'Shreya Mishra', website: 'https://www.hcltech.com', openings: 35 },
-            { id: 13, company: 'Cognizant', position: 'QA Engineer', location: 'Chennai, India', salary: '₹5,25,000 - ₹9,75,000', recruiter_name: 'Arun Kumar', website: 'https://www.cognizant.com', openings: 40 },
-            { id: 14, company: 'Tech Mahindra', position: 'Network Engineer', location: 'Pune, India', salary: '₹6,00,000 - ₹11,00,000', recruiter_name: 'Divya Patel', website: 'https://www.techmahindra.com', openings: 36 },
-            { id: 15, company: 'Deloitte', position: 'Management Consultant', location: 'New York, USA', salary: '$95,000 - $150,000', recruiter_name: 'Jennifer Anderson', website: 'https://www.deloitte.com', openings: 10 },
-            { id: 16, company: 'Goldman Sachs', position: 'Quantitative Analyst', location: 'New York, USA', salary: '$150,000 - $250,000', recruiter_name: 'Michael Chen', website: 'https://www.goldmansachs.com', openings: 4 },
-            { id: 17, company: 'JPMorgan Chase', position: 'Software Engineer', location: 'Manhattan, USA', salary: '$120,000 - $200,000', recruiter_name: 'Lisa Thompson', website: 'https://www.jpmorganchase.com', openings: 8 }
+            { id: 3, company: 'TCS', position: 'Software Developer', location: 'Mumbai, India', salary: '₹6,00,000 - ₹12,00,000', recruiter_name: 'Raj Sharma', website: 'https://www.tcs.com', openings: 50 },
+            { id: 4, company: 'Microsoft', position: 'Cloud Solutions Architect', location: 'Redmond, Washington', salary: '$130,000 - $190,000', recruiter_name: 'Emily Rodriguez', website: 'https://www.microsoft.com', openings: 15 },
+            { id: 5, company: 'Meta', position: 'Machine Learning Engineer', location: 'Menlo Park, California', salary: '$140,000 - $200,000', recruiter_name: 'David Kim', website: 'https://www.meta.com', openings: 10 },
+            { id: 6, company: 'Apple', position: 'iOS Developer', location: 'Cupertino, California', salary: '$125,000 - $185,000', recruiter_name: 'Jennifer Walsh', website: 'https://www.apple.com', openings: 6 },
+            { id: 7, company: 'Infosys', position: 'Data Analyst', location: 'Bangalore, India', salary: '₹8,00,000 - ₹15,00,000', recruiter_name: 'Priya Nair', website: 'https://www.infosys.com', openings: 40 },
+            { id: 8, company: 'Wipro', position: 'DevOps Engineer', location: 'Hyderabad, India', salary: '₹7,00,000 - ₹14,00,000', recruiter_name: 'Arun Kumar', website: 'https://www.wipro.com', openings: 35 },
+            { id: 9, company: 'Netflix', position: 'Backend Developer', location: 'Los Gatos, California', salary: '$150,000 - $220,000', recruiter_name: 'Michael Torres', website: 'https://www.netflix.com', openings: 5 },
+            { id: 10, company: 'Salesforce', position: 'CRM Consultant', location: 'San Francisco, California', salary: '$100,000 - $150,000', recruiter_name: 'Lisa Chang', website: 'https://www.salesforce.com', openings: 20 },
+            { id: 11, company: 'Adobe', position: 'UI/UX Designer', location: 'San Jose, California', salary: '$95,000 - $140,000', recruiter_name: 'Rachel Green', website: 'https://www.adobe.com', openings: 8 },
+            { id: 12, company: 'IBM', position: 'AI Research Scientist', location: 'Armonk, New York', salary: '$135,000 - $195,000', recruiter_name: 'James Wilson', website: 'https://www.ibm.com', openings: 7 }
         ];
 
         const recruitersData = [
             { id: 1, name: 'Sarah Chen', email: 'sarah.chen@google.com', company: 'Google', website: 'https://www.google.com' },
             { id: 2, name: 'Marcus Johnson', email: 'marcus.j@amazon.com', company: 'Amazon', website: 'https://www.amazon.com' },
-            { id: 3, name: 'Priya Patel', email: 'priya.patel@meta.com', company: 'Meta', website: 'https://www.meta.com' },
-            { id: 4, name: 'David Kumar', email: 'david.kumar@microsoft.com', company: 'Microsoft', website: 'https://www.microsoft.com' },
-            { id: 5, name: 'Emma Williams', email: 'emma.williams@apple.com', company: 'Apple', website: 'https://www.apple.com' },
-            { id: 6, name: 'Robert Smith', email: 'robert.smith@ibm.com', company: 'IBM', website: 'https://www.ibm.com' },
-            { id: 7, name: 'Raj Sharma', email: 'raj.sharma@tcs.co.in', company: 'TCS', website: 'https://www.tcs.com' },
-            { id: 8, name: 'Anjali Desai', email: 'anjali.desai@infosys.com', company: 'Infosys', website: 'https://www.infosys.com' },
-            { id: 9, name: 'Vikram Gupta', email: 'vikram.gupta@capgemini.com', company: 'Capgemini', website: 'https://www.capgemini.com' },
-            { id: 10, name: 'Neha Reddy', email: 'neha.reddy@accenture.com', company: 'Accenture', website: 'https://www.accenture.com' },
-            { id: 11, name: 'Ramesh Iyer', email: 'ramesh.iyer@wipro.com', company: 'Wipro', website: 'https://www.wipro.com' },
-            { id: 12, name: 'Shreya Mishra', email: 'shreya.mishra@hcltech.com', company: 'HCL Technologies', website: 'https://www.hcltech.com' },
-            { id: 13, name: 'Arun Kumar', email: 'arun.kumar@cognizant.com', company: 'Cognizant', website: 'https://www.cognizant.com' },
-            { id: 14, name: 'Divya Patel', email: 'divya.patel@techmahindra.com', company: 'Tech Mahindra', website: 'https://www.techmahindra.com' },
-            { id: 15, name: 'Jennifer Anderson', email: 'jennifer.anderson@deloitte.com', company: 'Deloitte', website: 'https://www.deloitte.com' },
-            { id: 16, name: 'Michael Chen', email: 'michael.chen@goldmansachs.com', company: 'Goldman Sachs', website: 'https://www.goldmansachs.com' },
-            { id: 17, name: 'Lisa Thompson', email: 'lisa.thompson@jpmorganchase.com', company: 'JPMorgan Chase', website: 'https://www.jpmorganchase.com' }
+            { id: 3, name: 'Raj Sharma', email: 'raj.sharma@tcs.co.in', company: 'TCS', website: 'https://www.tcs.com' },
+            { id: 4, name: 'Emily Rodriguez', email: 'emily.r@microsoft.com', company: 'Microsoft', website: 'https://www.microsoft.com' },
+            { id: 5, name: 'David Kim', email: 'david.kim@meta.com', company: 'Meta', website: 'https://www.meta.com' },
+            { id: 6, name: 'Jennifer Walsh', email: 'jennifer.w@apple.com', company: 'Apple', website: 'https://www.apple.com' },
+            { id: 7, name: 'Priya Nair', email: 'priya.nair@infosys.com', company: 'Infosys', website: 'https://www.infosys.com' },
+            { id: 8, name: 'Arun Kumar', email: 'arun.kumar@wipro.com', company: 'Wipro', website: 'https://www.wipro.com' },
+            { id: 9, name: 'Michael Torres', email: 'michael.t@netflix.com', company: 'Netflix', website: 'https://www.netflix.com' },
+            { id: 10, name: 'Lisa Chang', email: 'lisa.chang@salesforce.com', company: 'Salesforce', website: 'https://www.salesforce.com' },
+            { id: 11, name: 'Rachel Green', email: 'rachel.g@adobe.com', company: 'Adobe', website: 'https://www.adobe.com' },
+            { id: 12, name: 'James Wilson', email: 'james.wilson@ibm.com', company: 'IBM', website: 'https://www.ibm.com' }
         ];
 
         let currentJobId = null;
@@ -408,7 +397,7 @@
             document.getElementById('resumeFileName').textContent = fileName;
         }
 
-        function submitApplication(event) {
+        async function submitApplication(event) {
             event.preventDefault();
 
             try {
@@ -419,41 +408,46 @@
                 }
 
                 const resumeFile = document.getElementById('studentResume').files[0];
-                const resumeFileName = resumeFile ? resumeFile.name : 'Not uploaded';
+                if (!resumeFile) {
+                    showNotification('Please upload your resume', 'error');
+                    return;
+                }
 
-                const studentData = {
-                    id: Date.now(),
-                    jobId: currentJobId,
-                    name: document.getElementById('studentName').value,
-                    email: document.getElementById('studentEmail').value,
-                    phone: document.getElementById('studentPhone').value,
-                    rollNumber: document.getElementById('studentRoll').value,
-                    cgpa: document.getElementById('studentCGPA').value,
-                    resume: resumeFileName,
-                    coverLetter: document.getElementById('studentCoverLetter').value,
-                    portfolio: document.getElementById('studentPortfolio').value,
-                    appliedAt: new Date().toLocaleString(),
-                    status: 'Pending'
-                };
+                // Create FormData for PHP API
+                const formData = new FormData();
+                formData.append('name', document.getElementById('studentName').value);
+                formData.append('email', document.getElementById('studentEmail').value);
+                formData.append('phone', document.getElementById('studentPhone').value);
+                formData.append('roll_number', document.getElementById('studentRoll').value);
+                formData.append('department', 'General');
+                formData.append('cgpa', document.getElementById('studentCGPA').value);
+                formData.append('job_id', currentJobId);
+                formData.append('resume', resumeFile);
+                formData.append('cover_letter', document.getElementById('studentCoverLetter').value);
+                formData.append('portfolio_url', document.getElementById('studentPortfolio').value);
 
-                applications.push(studentData);
-                localStorage.setItem('applications', JSON.stringify(applications));
+                // Submit to PHP API (saves to MySQL)
+                const response = await fetch('api/submit-application.php', {
+                    method: 'POST',
+                    body: formData
+                });
 
-                // Show success notification toast
-                showNotification('✓ Application submitted successfully!', 'success');
-                
-                // Add to notification history
-                addNotification(
-                    'Application Submitted',
-                    `Your application for ${job.position} at ${job.company} has been submitted successfully. Resume: ${resumeFileName}`,
-                    'success'
-                );
+                const result = await response.json();
 
-                closeStudentModal();
-                setTimeout(() => loadReports(), 100);
+                if (result.success) {
+                    showNotification('Application submitted successfully!', 'success');
+                    addNotification(
+                        'Application Submitted',
+                        `Your application for ${job.position} at ${job.company} has been submitted successfully.`,
+                        'success'
+                    );
+                    closeStudentModal();
+                } else {
+                    showNotification(result.message || 'Failed to submit application', 'error');
+                }
             } catch (e) {
                 console.error('Error submitting application:', e);
-                showNotification('Error submitting application', 'error');
+                showNotification('Server error. Run this on XAMPP/WAMP with MySQL.', 'error');
             }
         }
 
